@@ -94,10 +94,22 @@ const getstatus = async (req, res) => {
     res.status(200).json(...userStatus)
 
 }
+const updatestatus = async (req, res) => {
+    const { _id } = req.query
+    console.log(_id);
+    const body = req.body
+    console.log(body)
+    const updatestatus = await stautsModal.findByIdAndUpdate(_id, { ...body })
+    console.log(updatestatus)
+    res.end('updatestatus')
+}
+
+
 
 module.exports = {
     resister,
     login,
     status,
-    getstatus
+    getstatus,
+    updatestatus
 }

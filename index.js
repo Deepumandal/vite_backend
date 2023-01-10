@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose')
 const multer = require('multer');
 const cors = require('cors');
-const { resister, login, status, getstatus } = require('./controller/auth');
+const { resister, login, status, getstatus, updatestatus } = require('./controller/auth');
 
 mongoose.set('strictQuery', true)
 require('dotenv').config()
@@ -28,6 +28,7 @@ app.post('/autn/resister', resister)
 app.post('/autn/login', login)
 app.post('/status', status)
 app.get('/getstatus', getstatus)
+app.patch('/updatestatus', updatestatus )
 
 
 mongoose.connect(process.env.DBurl).then(() => {
