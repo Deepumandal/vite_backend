@@ -61,7 +61,7 @@ const status = async (req, res) => {
     if (!user) {
         return res.status(403).json({ massage: 'User not found' })
     }
-    const { firstname, lastname, address, gender, dob, salary, role } = user[0]._doc
+    const { firstname, lastname, address, gender, dob, salary, role } = user[0]?._doc
 
     const userStatus = await stautsModal({
         firstname,
@@ -86,23 +86,34 @@ const getstatus = async (req, res) => {
     const { _id } = req.query
 
     let user = await userMadal.findById(_id)
-
     let userStatus = await stautsModal.find({ email: user.email })
-
     if (!userStatus) return res.status(403).json('user not found')
+    console.log(userStatus)
 
-    res.status(200).json(...userStatus)
+    if (user._doc.role === "r1") {
+        let alluser = await stautsModal.find({})
+        res.status(200).json(alluser)
+    } else {
+
+        return res.status(200).json(userStatus)
+    }
+
+
 
 }
 const updatestatus = async (req, res) => {
-    const { _id } = req.query
-    console.log(_id);
+    const { _id, id } = req.query
+    let varify = await userMadal.findById(_id)
+    if (!varify) return res.status(403).json('user not found')
+
     const body = req.body
-    console.log(body)
-    const updatestatus = await stautsModal.findByIdAndUpdate(_id, { ...body })
-    console.log(updatestatus)
+
+
+    const updatestatus = await stautsModal.findByIdAndUpdate({ _id: id }, { ...body })
+
     res.end('updatestatus')
 }
+
 
 
 
